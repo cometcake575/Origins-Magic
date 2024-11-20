@@ -1,0 +1,16 @@
+{
+	"powers": [
+		"magicorigins:kill_boost",
+		"magicorigins:cursed_strikes",
+		"magicorigins:undead_ally",
+		"magicorigins:no_magic",
+		"magicorigins:dark_aura",
+		"magicorigins:weak_in_water"
+	],
+	"icon": {
+		"item": "minecraft:wither_skeleton_skull"
+	},
+	"order": 5000,
+	"impact": 3,
+	"description": "Evil sorcerers using corrupted magic, Warlocks cannot use regular magic but have their own, stronger powers."
+}

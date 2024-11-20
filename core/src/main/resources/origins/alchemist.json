@@ -1,0 +1,14 @@
+{
+	"powers": [
+		"magicorigins:potion_master",
+		"magicorigins:gold_converter",
+		"magicorigins:unskilled_warrior",
+		"magicorigins:weak_in_water"
+	],
+	"icon": {
+		"item": "minecraft:gold_ingot"
+	},
+	"order": 5000,
+	"impact": 1,
+	"description": "Masters of metals and brewery, Alchemists can turn copper to gold and have much stronger potions."
+}
