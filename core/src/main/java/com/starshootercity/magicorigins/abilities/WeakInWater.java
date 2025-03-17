@@ -1,6 +1,5 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
 import com.starshootercity.OriginsReborn;
 import com.starshootercity.abilities.AttributeModifierAbility;
 import com.starshootercity.abilities.VisibleAbility;
@@ -10,17 +9,15 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class WeakInWater implements VisibleAbility, AttributeModifierAbility {
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("Water saps your energy, leaving you with only 3 hearts of health.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "Water saps your energy, leaving you with only 3 hearts of health.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Hydrophobia", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Hydrophobia";
     }
 
     @Override
@@ -44,7 +41,7 @@ public class WeakInWater implements VisibleAbility, AttributeModifierAbility {
     }
 
     @Override
-    public AttributeModifier.Operation getOperation() {
+    public AttributeModifier.@NotNull Operation getOperation() {
         return AttributeModifier.Operation.ADD_NUMBER;
     }
 }

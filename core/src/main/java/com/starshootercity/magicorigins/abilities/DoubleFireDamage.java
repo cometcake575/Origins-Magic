@@ -1,7 +1,6 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.starshootercity.abilities.Ability;
-import com.starshootercity.abilities.AbilityRegister;
 import net.kyori.adventure.key.Key;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +18,6 @@ public class DoubleFireDamage implements Ability, Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if (Set.of(EntityDamageEvent.DamageCause.FIRE, EntityDamageEvent.DamageCause.FIRE_TICK, EntityDamageEvent.DamageCause.LAVA, EntityDamageEvent.DamageCause.HOT_FLOOR).contains(event.getCause())) AbilityRegister.runForAbility(event.getEntity(), getKey(), () -> event.setDamage(event.getDamage() * 2));
+        if (Set.of(EntityDamageEvent.DamageCause.FIRE, EntityDamageEvent.DamageCause.FIRE_TICK, EntityDamageEvent.DamageCause.LAVA, EntityDamageEvent.DamageCause.HOT_FLOOR).contains(event.getCause())) runForAbility(event.getEntity(), player -> event.setDamage(event.getDamage() * 2));
     }
 }

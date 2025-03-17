@@ -1,11 +1,9 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
-import com.starshootercity.ShortcutUtils;
-import com.starshootercity.abilities.AbilityRegister;
 import com.starshootercity.abilities.VisibleAbility;
 import com.starshootercity.cooldowns.CooldownAbility;
 import com.starshootercity.cooldowns.Cooldowns;
+import com.starshootercity.util.ShortcutUtils;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -18,18 +16,17 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ControlMonsters implements VisibleAbility, Listener, CooldownAbility {
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("Right clicking a monster will hypnotise it to target the last other thing you attacked.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "Right clicking a monster will hypnotise it to target the last other thing you attacked.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Hypnosis", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Hypnosis";
     }
 
     @Override
@@ -53,16 +50,16 @@ public class ControlMonsters implements VisibleAbility, Listener, CooldownAbilit
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.getRightClicked() instanceof Monster monster) {
-            AbilityRegister.runForAbility(event.getPlayer(), getKey(), () -> {
-                if (hasCooldown(event.getPlayer())) return;
-                LivingEntity e = lastHurtEntities.get(event.getPlayer());
-                if (monster.equals(e)) e = secondLastHurtEntities.get(event.getPlayer());
+            runForAbility(event.getPlayer(), player -> {
+                if (hasCooldown(player)) return;
+                LivingEntity e = lastHurtEntities.get(player);
+                if (monster.equals(e)) e = secondLastHurtEntities.get(player);
                 if (monster.equals(e)) return;
                 if (e == null) return;
                 if (e.isDead()) return;
-                setCooldown(event.getPlayer());
+                setCooldown(player);
                 monster.setTarget(e);
-                event.getPlayer().swingMainHand();
+                player.swingMainHand();
                 monster.getWorld().spawnParticle(Particle.SOUL, monster.getLocation().clone().add(0, 1, 0), 10, 0.25, 0.5, 0.25, 0);
             });
         }

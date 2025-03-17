@@ -1,12 +1,11 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
-import com.starshootercity.OriginSwapper;
-import com.starshootercity.abilities.AbilityRegister;
 import com.starshootercity.abilities.VisibilityChangingAbility;
 import com.starshootercity.abilities.VisibleAbility;
 import com.starshootercity.events.PlayerSwapOriginEvent;
 import com.starshootercity.magicorigins.OriginsMagic;
+import com.starshootercity.util.config.ConfigManager;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
@@ -17,24 +16,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Collections;
 
 public class InvisibleInDarkness implements VisibleAbility, Listener, VisibilityChangingAbility {
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("In really dark places you enter Shadow Form, where nothing see or attack you.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "In really dark places you enter Shadow Form, where nothing see or attack you.";
     }
 
     @EventHandler
     public void onServerTickEnd(ServerTickEndEvent event) {
         if (event.getTickNumber() % 3 != 0) return;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            AbilityRegister.runForAbility(player, getKey(), () -> {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
+            runForAbility(pl, player -> {
                 byte b = player.getLocation().getBlock().getLightLevel();
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (p.equals(player)) continue;
-                    if (b <= 4) p.hidePlayer(OriginsMagic.getInstance(), player);
+                    if (b <= getConfigOption(OriginsMagic.getInstance(), lightLevel, ConfigManager.SettingType.INTEGER)) p.hidePlayer(OriginsMagic.getInstance(), player);
                     else p.showPlayer(OriginsMagic.getInstance(), player);
                 }
             });
@@ -45,9 +44,9 @@ public class InvisibleInDarkness implements VisibleAbility, Listener, Visibility
     public void onEntityMove(EntityMoveEvent event) {
         if (event.getEntity() instanceof Mob mob) {
             if (mob.getTarget() == null) return;
-            AbilityRegister.runForAbility(mob.getTarget(), getKey(), () -> {
-                byte b = mob.getTarget().getLocation().getBlock().getLightLevel();
-                if (b <= 4) mob.setTarget(null);
+            runForAbility(mob.getTarget(), player -> {
+                byte b = player.getLocation().getBlock().getLightLevel();
+                if (b <= getConfigOption(OriginsMagic.getInstance(), lightLevel, ConfigManager.SettingType.INTEGER)) mob.setTarget(null);
             });
         }
     }
@@ -55,9 +54,9 @@ public class InvisibleInDarkness implements VisibleAbility, Listener, Visibility
     @EventHandler
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getTarget() == null) return;
-        AbilityRegister.runForAbility(event.getTarget(), getKey(), () -> {
-            byte b = event.getTarget().getLocation().getBlock().getLightLevel();
-            if (b <= 4) event.setCancelled(true);
+        runForAbility(event.getTarget(), player -> {
+            byte b = player.getLocation().getBlock().getLightLevel();
+            if (b <= getConfigOption(OriginsMagic.getInstance(), lightLevel, ConfigManager.SettingType.INTEGER)) event.setCancelled(true);
         });
     }
 
@@ -69,8 +68,8 @@ public class InvisibleInDarkness implements VisibleAbility, Listener, Visibility
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Shadow Form", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Shadow Form";
     }
 
     @Override
@@ -80,6 +79,13 @@ public class InvisibleInDarkness implements VisibleAbility, Listener, Visibility
 
     @Override
     public boolean isInvisible(Player player) {
-        return player.getLocation().getBlock().getLightLevel() <= 4;
+        return player.getLocation().getBlock().getLightLevel() <= getConfigOption(OriginsMagic.getInstance(), lightLevel, ConfigManager.SettingType.INTEGER);
+    }
+
+    private final String lightLevel = "light_level";
+
+    @Override
+    public void initialize() {
+        registerConfigOption(OriginsMagic.getInstance(), lightLevel, Collections.singletonList("The light level the player turns invisible in"), ConfigManager.SettingType.INTEGER, 4);
     }
 }

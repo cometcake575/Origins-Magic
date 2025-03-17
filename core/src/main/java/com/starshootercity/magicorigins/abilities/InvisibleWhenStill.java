@@ -1,6 +1,5 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
 import com.starshootercity.abilities.VisibilityChangingAbility;
 import com.starshootercity.abilities.VisibleAbility;
 import net.kyori.adventure.key.Key;
@@ -12,7 +11,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class InvisibleWhenStill implements VisibilityChangingAbility, VisibleAbility, Listener {
@@ -35,13 +33,13 @@ public class InvisibleWhenStill implements VisibilityChangingAbility, VisibleAbi
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("You can stand so still that you can't be seen.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "You can stand so still that you can't be seen.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Ghostly", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Ghostly";
     }
 
     @Override

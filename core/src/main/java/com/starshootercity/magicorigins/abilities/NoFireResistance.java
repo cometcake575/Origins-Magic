@@ -1,7 +1,6 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.starshootercity.abilities.Ability;
-import com.starshootercity.abilities.AbilityRegister;
 import net.kyori.adventure.key.Key;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +18,6 @@ public class NoFireResistance implements Ability, Listener {
     public void onEntityPotionEffect(EntityPotionEffectEvent event) {
         if (event.getNewEffect() == null) return;
         if (!event.getNewEffect().getType().equals(PotionEffectType.FIRE_RESISTANCE)) return;
-        AbilityRegister.runForAbility(event.getEntity(), getKey(), () -> event.setCancelled(true));
+        runForAbility(event.getEntity(), player -> event.setCancelled(true));
     }
 }

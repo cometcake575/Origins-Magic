@@ -1,26 +1,26 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
-import com.starshootercity.abilities.AbilityRegister;
 import com.starshootercity.abilities.VisibleAbility;
+import com.starshootercity.magicorigins.OriginsMagic;
+import com.starshootercity.util.config.ConfigManager;
 import net.kyori.adventure.key.Key;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Collections;
 
 public class UnskilledWarrior implements VisibleAbility, Listener {
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("Your reliance on your magic has left you unskilled at melee combat.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "Your reliance on your magic has left you unskilled at melee combat.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Unskilled", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Unskilled";
     }
 
     @Override
@@ -30,6 +30,13 @@ public class UnskilledWarrior implements VisibleAbility, Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        AbilityRegister.runForAbility(event.getDamager(), getKey(), () -> event.setDamage(event.getDamage()*0.75));
+        runForAbility(event.getDamager(), player -> event.setDamage(event.getDamage()*getConfigOption(OriginsMagic.getInstance(), damageMultiplier, ConfigManager.SettingType.FLOAT)));
+    }
+
+    private final String damageMultiplier = "damage_multiplier";
+
+    @Override
+    public void initialize() {
+        registerConfigOption(OriginsMagic.getInstance(), damageMultiplier, Collections.singletonList("Amount to multiply melee damage dealt by"), ConfigManager.SettingType.FLOAT, 0.75f);
     }
 }

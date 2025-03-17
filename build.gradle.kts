@@ -1,11 +1,11 @@
 plugins {
     id("java")
-    id("io.papermc.paperweight.userdev") version "1.7.1" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14" apply false
 }
 
 group = "com.starshootercity.magicorigins"
-version = "1.0.3"
+version = "1.0.9"
 
 repositories {
     mavenCentral()
@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":version"))
     implementation(project(":1.21", "reobf"))
     implementation(project(":1.21.1", "reobf"))
+    implementation(project(":1.21.4", "reobf"))
     implementation(project(":1.21.3", "reobf"))
     implementation(project(":1.20.6", "reobf"))
     implementation(project(":1.20.4", "reobf"))

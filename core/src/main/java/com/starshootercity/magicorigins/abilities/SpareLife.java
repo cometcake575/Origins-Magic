@@ -1,7 +1,5 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
-import com.starshootercity.abilities.AbilityRegister;
 import com.starshootercity.abilities.VisibleAbility;
 import com.starshootercity.cooldowns.CooldownAbility;
 import com.starshootercity.cooldowns.Cooldowns;
@@ -15,17 +13,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class SpareLife implements CooldownAbility, VisibleAbility, Listener {
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("You can survive death once every 10 minutes.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "You can survive death once every 10 minutes.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Final Shout", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Final Shout";
     }
 
     @Override
@@ -40,15 +36,15 @@ public class SpareLife implements CooldownAbility, VisibleAbility, Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        AbilityRegister.runForAbility(event.getPlayer(), getKey(), () -> {
-            if (hasCooldown(event.getPlayer())) return;
-            setCooldown(event.getPlayer());
+        runForAbility(event.getPlayer(), player -> {
+            if (hasCooldown(player)) return;
+            setCooldown(player);
             event.setCancelled(true);
-            event.getPlayer().setHealth(2);
-            OriginsMagic.getNMSInvoker().playTotemEffect(event.getPlayer());
-            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 900, 1, false, true, true));
-            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 800, 0, false, true, true));
-            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 100, 1, false, true, true));
+            player.setHealth(2);
+            OriginsMagic.getNMSInvoker().playTotemEffect(player);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 900, 1, false, true, true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 800, 0, false, true, true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 100, 1, false, true, true));
         });
     }
 }

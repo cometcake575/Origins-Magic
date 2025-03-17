@@ -3,13 +3,21 @@ package com.starshootercity.magicorigins;
 import com.starshootercity.OriginsAddon;
 import com.starshootercity.abilities.Ability;
 import com.starshootercity.magicorigins.abilities.*;
-import com.starshootercity.magicorigins.abilities.killboost.KillBoost;
+import com.starshootercity.util.Metrics;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OriginsMagic extends OriginsAddon {
+
+    public static OriginsMagic getInstance() {
+        return instance;
+    }
+
+    private static OriginsMagic instance;
+
     @Override
     public @NotNull String getNamespace() {
         return "magicorigins";
@@ -17,8 +25,8 @@ public class OriginsMagic extends OriginsAddon {
 
     @Override
     public @NotNull List<Ability> getAbilities() {
-        return List.of(
-                KillBoost.getKillBoost(OriginsMagic.getNMSInvoker().getMaxAbsorptionAttribute()),
+        List<Ability> abilities = new ArrayList<>(List.of(
+                new KillBoost(),
                 new CursedStrikes(),
                 new UndeadAlly(),
                 new NoMagic(),
@@ -49,10 +57,12 @@ public class OriginsMagic extends OriginsAddon {
                 new NoFireResistance(),
                 new IncreasedReach(),
                 IncreasedReach.ExtraReachBlocks.INSTANCE,
-                IncreasedReach.ExtraReachEntities.INSTANCE,
                 IncreasedReach.ExtraReachItems.INSTANCE,
                 new Telekinesis()
-        );
+        ));
+        if (IncreasedReach.ExtraReachEntities.INSTANCE.tryRegister()) abilities.add(IncreasedReach.ExtraReachEntities.INSTANCE);
+        if (IncreasedReach.ExtraReachBlocks.INSTANCE.tryRegister()) abilities.add(IncreasedReach.ExtraReachBlocks.INSTANCE);
+        return abilities;
     }
     private static MagicNMSInvoker nmsInvoker;
 
@@ -72,7 +82,7 @@ public class OriginsMagic extends OriginsAddon {
             case "1.21" -> new MagicNMSInvokerV1_21();
             case "1.21.1" -> new MagicNMSInvokerV1_21_1();
             case "1.21.2", "1.21.3" -> new MagicNMSInvokerV1_21_3();
-            default -> throw new IllegalStateException("Unexpected version: " + Bukkit.getMinecraftVersion() + " only versions 1.20 - 1.20.6 are supported");
+            default -> new MagicNMSInvokerV1_21_4();
         };
     }
 
@@ -82,6 +92,10 @@ public class OriginsMagic extends OriginsAddon {
 
     @Override
     public void onRegister() {
+        instance = this;
         initializeNMSInvoker();
+
+        int pluginId = 25124;
+        new Metrics(this, pluginId);
     }
 }

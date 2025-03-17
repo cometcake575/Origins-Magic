@@ -1,8 +1,6 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
 import com.starshootercity.abilities.Ability;
-import com.starshootercity.abilities.AbilityRegister;
 import com.starshootercity.abilities.MultiAbility;
 import com.starshootercity.abilities.VisibleAbility;
 import com.starshootercity.magicorigins.OriginsMagic;
@@ -23,13 +21,13 @@ import java.util.List;
 
 public class NoMagic implements VisibleAbility, MultiAbility {
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("Your dark magic repels regular forms of magic like potions and enchantments.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "Your dark magic repels regular forms of magic like potions and enchantments.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Magic Resistant", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Magic Resistant";
     }
 
     @Override
@@ -53,7 +51,7 @@ public class NoMagic implements VisibleAbility, MultiAbility {
 
         @EventHandler
         public void onEntityPotionEffect(EntityPotionEffectEvent event) {
-            AbilityRegister.runForAbility(event.getEntity(), getKey(), () -> {
+            runForAbility(event.getEntity(), player -> {
                 if (event.getNewEffect() == null) return;
                 event.setCancelled(true);
             });
@@ -64,8 +62,8 @@ public class NoMagic implements VisibleAbility, MultiAbility {
 
         public static NoEnchantments INSTANCE = new NoEnchantments();
 
-        public void check(HumanEntity player) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(OriginsMagic.getInstance(), () -> AbilityRegister.runForAbility(player, getKey(), () -> {
+        public void check(HumanEntity p) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(OriginsMagic.getInstance(), () -> runForAbility(p, player -> {
                 for (Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
                     if (enchantment.isCursed()) continue;
                     player.getInventory().getItemInMainHand().removeEnchantment(enchantment);
@@ -103,7 +101,7 @@ public class NoMagic implements VisibleAbility, MultiAbility {
 
         @EventHandler
         public void onEnchantItem(EnchantItemEvent event) {
-            AbilityRegister.runForAbility(event.getEnchanter(), getKey(), () -> event.setCancelled(true));
+            runForAbility(event.getEnchanter(), player -> event.setCancelled(true));
         }
 
         @EventHandler

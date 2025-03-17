@@ -1,12 +1,11 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
-import com.starshootercity.abilities.AbilityRegister;
 import com.starshootercity.abilities.VisibleAbility;
 import com.starshootercity.cooldowns.CooldownAbility;
 import com.starshootercity.cooldowns.Cooldowns;
 import com.starshootercity.events.PlayerLeftClickEvent;
 import com.starshootercity.magicorigins.OriginsMagic;
+import com.starshootercity.util.config.ConfigManager;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,17 +16,17 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collections;
 
 public class BringBackDead implements VisibleAbility, Listener, CooldownAbility {
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("When you swing your fist, nearby dead players that have not yet respawned come back where they died.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "When you swing your fist, nearby dead players that have not yet respawned come back where they died.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Resurrection Spell", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Resurrection Spell";
     }
 
     @Override
@@ -39,8 +38,8 @@ public class BringBackDead implements VisibleAbility, Listener, CooldownAbility 
     public void onPlayerLeftClick(PlayerLeftClickEvent event) {
         if (event.hasItem()) return;
         if (event.hasBlock()) return;
-        AbilityRegister.runForAbility(event.getPlayer(), getKey(), () -> {
-            if (hasCooldown(event.getPlayer())) return;
+        runForAbility(event.getPlayer(), p -> {
+            if (hasCooldown(p)) return;
             boolean cooldown = false;
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (!player.isDead()) continue;
@@ -49,8 +48,8 @@ public class BringBackDead implements VisibleAbility, Listener, CooldownAbility 
                 loc.add(0.5, 0, 0.5);
                 loc.setPitch(player.getLocation().getPitch());
                 loc.setYaw(player.getLocation().getYaw());
-                if (!loc.getWorld().equals(event.getPlayer().getWorld())) continue;
-                if (loc.distance(event.getPlayer().getLocation()) > 16) continue;
+                if (!loc.getWorld().equals(p.getWorld())) continue;
+                if (loc.distance(p.getLocation()) > 16) continue;
                 cooldown = true;
                 Location l = player.getBedSpawnLocation();
                 if (l != null) l = l.clone();
@@ -58,16 +57,28 @@ public class BringBackDead implements VisibleAbility, Listener, CooldownAbility 
                 Location finalL = l;
                 Bukkit.getScheduler().scheduleSyncDelayedTask(OriginsMagic.getInstance(), () -> {
                     player.spigot().respawn();
+
                     player.setHealth(2);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 900, 1, false, true, true));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 800, 0, false, true, true));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 100, 1, false, true, true));
-                    player.setBedSpawnLocation(finalL, true);
+                    if (getConfigOption(OriginsMagic.getInstance(), totemEffects, ConfigManager.SettingType.BOOLEAN)) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 900, 1, false, true, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 800, 0, false, true, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 100, 1, false, true, true));
+                        player.setBedSpawnLocation(finalL, true);
+                    }
                 }, 1);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(OriginsMagic.getInstance(), () -> OriginsMagic.getNMSInvoker().playTotemEffect(player), 3);
+                if (getConfigOption(OriginsMagic.getInstance(), totemEffects, ConfigManager.SettingType.BOOLEAN)) {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(OriginsMagic.getInstance(), () -> OriginsMagic.getNMSInvoker().playTotemEffect(player), 3);
+                }
             }
-            if (cooldown) setCooldown(event.getPlayer());
+            if (cooldown) setCooldown(p);
         });
+    }
+
+    private final String totemEffects = "use_totem_effects";
+
+    @Override
+    public void initialize() {
+        registerConfigOption(OriginsMagic.getInstance(), totemEffects, Collections.singletonList("Whether to apply the Totem of Undying effect when a player is brought back"), ConfigManager.SettingType.BOOLEAN, true);
     }
 
     @Override

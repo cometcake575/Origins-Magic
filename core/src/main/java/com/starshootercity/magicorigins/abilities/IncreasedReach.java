@@ -1,7 +1,6 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
-import com.starshootercity.OriginSwapper;
 import com.starshootercity.OriginsReborn;
 import com.starshootercity.abilities.*;
 import net.kyori.adventure.key.Key;
@@ -27,13 +26,13 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("You can reach blocks, dropped items and entities much further away than normal.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "You can reach things much further away than normal.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Telekinetic Reach", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Telekinetic Reach";
     }
 
     @Override
@@ -46,7 +45,14 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
 
         @Override
         public @NotNull Attribute getAttribute() {
-            return OriginsReborn.getNMSInvoker().getEntityInteractionRangeAttribute();
+            return attribute;
+        }
+
+        private Attribute attribute;
+
+        public boolean tryRegister() {
+            attribute = OriginsReborn.getNMSInvoker().getEntityInteractionRangeAttribute();
+            return attribute != null;
         }
 
         @Override
@@ -70,7 +76,14 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
 
         @Override
         public @NotNull Attribute getAttribute() {
-            return OriginsReborn.getNMSInvoker().getBlockInteractionRangeAttribute();
+            return attribute;
+        }
+
+        private Attribute attribute;
+
+        public boolean tryRegister() {
+            attribute = OriginsReborn.getNMSInvoker().getBlockInteractionRangeAttribute();
+            return attribute != null;
         }
 
         @Override
@@ -110,8 +123,8 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
 
         @EventHandler
         public void onServerTickEnd(ServerTickEndEvent event) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                AbilityRegister.runForAbility(player, getKey(), () -> {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                runForAbility(p, player -> {
                     List<Entity> entities = player.getNearbyEntities(2.5, 2.5, 2.5);
                     for (Entity entity : entities) {
                         if (entity instanceof Item item) {

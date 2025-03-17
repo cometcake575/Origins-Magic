@@ -1,7 +1,5 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
-import com.starshootercity.abilities.AbilityRegister;
 import com.starshootercity.abilities.VisibleAbility;
 import io.papermc.paper.tag.EntityTags;
 import net.kyori.adventure.key.Key;
@@ -26,25 +24,23 @@ public class UndeadAlly implements VisibleAbility, Listener {
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("With your power over darkness, undead creatures will not attack you unprovoked.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "With your power over darkness, undead creatures will not attack you unprovoked.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Undead Ally", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Undead Ally";
     }
 
     @EventHandler
     public void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent event) {
         if (EntityTags.UNDEADS.isTagged(event.getEntityType())) {
-            if (event.getTarget() instanceof Player player) {
-                AbilityRegister.runForAbility(player, getKey(), () -> {
-                    if (!attackedEntities.getOrDefault(player, new ArrayList<>()).contains(event.getEntity())) {
-                        event.setCancelled(true);
-                    }
-                });
-            }
+            runForAbility(event.getTarget(), player -> {
+                if (!attackedEntities.getOrDefault(player, new ArrayList<>()).contains(event.getEntity())) {
+                    event.setCancelled(true);
+                }
+            });
         }
     }
 

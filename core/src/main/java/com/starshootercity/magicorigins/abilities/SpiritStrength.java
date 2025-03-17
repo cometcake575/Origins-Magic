@@ -1,6 +1,5 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.OriginSwapper;
 import com.starshootercity.OriginsReborn;
 import com.starshootercity.abilities.Ability;
 import com.starshootercity.abilities.AttributeModifierAbility;
@@ -23,13 +22,13 @@ public class SpiritStrength implements VisibleAbility, MultiAbility {
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getDescription() {
-        return OriginSwapper.LineData.makeLineFor("You are stronger in the Nether, but weaker outside of it.", OriginSwapper.LineData.LineComponent.LineType.DESCRIPTION);
+    public String description() {
+        return "You are stronger in the Nether, but weaker outside of it.";
     }
 
     @Override
-    public @NotNull List<OriginSwapper.LineData.LineComponent> getTitle() {
-        return OriginSwapper.LineData.makeLineFor("Spirit Strength", OriginSwapper.LineData.LineComponent.LineType.TITLE);
+    public String title() {
+        return "Spirit Strength";
     }
 
     @Override
@@ -57,7 +56,7 @@ public class SpiritStrength implements VisibleAbility, MultiAbility {
         }
 
         @Override
-        public AttributeModifier.Operation getOperation() {
+        public AttributeModifier.@NotNull Operation getOperation() {
             return AttributeModifier.Operation.MULTIPLY_SCALAR_1;
         }
 
@@ -87,7 +86,7 @@ public class SpiritStrength implements VisibleAbility, MultiAbility {
         }
 
         @Override
-        public AttributeModifier.Operation getOperation() {
+        public AttributeModifier.@NotNull Operation getOperation() {
             return AttributeModifier.Operation.MULTIPLY_SCALAR_1;
         }
 
