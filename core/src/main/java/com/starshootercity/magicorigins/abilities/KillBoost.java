@@ -1,8 +1,8 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.starshootercity.OriginsReborn;
-import com.starshootercity.abilities.AttributeModifierAbility;
-import com.starshootercity.abilities.VisibleAbility;
+import com.starshootercity.abilities.types.AttributeModifierAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import com.starshootercity.magicorigins.OriginsMagic;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
@@ -79,12 +79,7 @@ public class KillBoost implements VisibleAbility, Listener, AttributeModifierAbi
     }
 
     @Override
-    public double getAmount() {
-        return 0;
-    }
-
-    @Override
-    public double getChangedAmount(Player player) {
+    public double getAmount(Player player) {
         return getAbsorption(player);
     }
 

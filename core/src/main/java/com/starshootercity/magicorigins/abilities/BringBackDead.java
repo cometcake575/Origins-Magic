@@ -1,7 +1,7 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.abilities.VisibleAbility;
-import com.starshootercity.cooldowns.CooldownAbility;
+import com.starshootercity.abilities.types.CooldownAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import com.starshootercity.cooldowns.Cooldowns;
 import com.starshootercity.events.PlayerLeftClickEvent;
 import com.starshootercity.magicorigins.OriginsMagic;
@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -77,7 +78,7 @@ public class BringBackDead implements VisibleAbility, Listener, CooldownAbility 
     private final String totemEffects = "use_totem_effects";
 
     @Override
-    public void initialize() {
+    public void initialize(JavaPlugin plugin) {
         registerConfigOption(OriginsMagic.getInstance(), totemEffects, Collections.singletonList("Whether to apply the Totem of Undying effect when a player is brought back"), ConfigManager.SettingType.BOOLEAN, true);
     }
 

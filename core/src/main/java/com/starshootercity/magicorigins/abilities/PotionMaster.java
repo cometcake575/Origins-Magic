@@ -1,6 +1,6 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.abilities.VisibleAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import com.starshootercity.magicorigins.OriginsMagic;
 import com.starshootercity.util.config.ConfigManager;
 import net.kyori.adventure.key.Key;
@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,7 +69,7 @@ public class PotionMaster implements VisibleAbility, Listener {
     private final String durationMultiplier = "duration_multiplier";
 
     @Override
-    public void initialize() {
+    public void initialize(JavaPlugin plugin) {
         registerConfigOption(OriginsMagic.getInstance(), strengthIncrease, Collections.singletonList("Number of levels to increase the potion strength by"), ConfigManager.SettingType.INTEGER, 1);
         registerConfigOption(OriginsMagic.getInstance(), durationMultiplier, Collections.singletonList("Multiplier for the potion duration"), ConfigManager.SettingType.FLOAT, 2f);
     }

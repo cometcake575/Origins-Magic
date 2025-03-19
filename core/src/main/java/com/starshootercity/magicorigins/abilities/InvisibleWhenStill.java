@@ -1,7 +1,7 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.abilities.VisibilityChangingAbility;
-import com.starshootercity.abilities.VisibleAbility;
+import com.starshootercity.abilities.types.VisibilityChangingAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.abilities.VisibleAbility;
-import com.starshootercity.cooldowns.CooldownAbility;
+import com.starshootercity.abilities.types.CooldownAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import com.starshootercity.cooldowns.Cooldowns;
 import io.papermc.paper.tag.EntityTags;
 import net.kyori.adventure.key.Key;

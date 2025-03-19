@@ -1,8 +1,8 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
-import com.starshootercity.abilities.VisibilityChangingAbility;
-import com.starshootercity.abilities.VisibleAbility;
+import com.starshootercity.abilities.types.VisibilityChangingAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import com.starshootercity.events.PlayerSwapOriginEvent;
 import com.starshootercity.magicorigins.OriginsMagic;
 import com.starshootercity.util.config.ConfigManager;
@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -85,7 +86,7 @@ public class InvisibleInDarkness implements VisibleAbility, Listener, Visibility
     private final String lightLevel = "light_level";
 
     @Override
-    public void initialize() {
+    public void initialize(JavaPlugin plugin) {
         registerConfigOption(OriginsMagic.getInstance(), lightLevel, Collections.singletonList("The light level the player turns invisible in"), ConfigManager.SettingType.INTEGER, 4);
     }
 }

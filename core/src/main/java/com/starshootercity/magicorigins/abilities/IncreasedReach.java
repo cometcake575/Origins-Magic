@@ -2,7 +2,7 @@ package com.starshootercity.magicorigins.abilities;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import com.starshootercity.OriginsReborn;
-import com.starshootercity.abilities.*;
+import com.starshootercity.abilities.types.MultiAbility;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class IncreasedReach implements VisibleAbility, MultiAbility {
+public class IncreasedReach implements com.starshootercity.abilities.types.VisibleAbility, MultiAbility {
     @Override
     public @NotNull Key getKey() {
         return Key.key("magicorigins:increased_reach");
@@ -36,11 +36,11 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
     }
 
     @Override
-    public List<Ability> getAbilities() {
+    public List<com.starshootercity.abilities.types.Ability> getAbilities() {
         return List.of(ExtraReachBlocks.INSTANCE, ExtraReachEntities.INSTANCE, ExtraReachItems.INSTANCE);
     }
 
-    public static class ExtraReachEntities implements AttributeModifierAbility {
+    public static class ExtraReachEntities implements com.starshootercity.abilities.types.AttributeModifierAbility {
         public static ExtraReachEntities INSTANCE = new ExtraReachEntities();
 
         @Override
@@ -56,7 +56,7 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
         }
 
         @Override
-        public double getAmount() {
+        public double getAmount(Player player) {
             return 2;
         }
 
@@ -71,7 +71,7 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
         }
     }
 
-    public static class ExtraReachBlocks implements AttributeModifierAbility {
+    public static class ExtraReachBlocks implements com.starshootercity.abilities.types.AttributeModifierAbility {
         public static ExtraReachBlocks INSTANCE = new ExtraReachBlocks();
 
         @Override
@@ -87,7 +87,7 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
         }
 
         @Override
-        public double getAmount() {
+        public double getAmount(Player player) {
             return 2;
         }
 
@@ -102,7 +102,7 @@ public class IncreasedReach implements VisibleAbility, MultiAbility {
         }
     }
 
-    public static class ExtraReachItems implements Ability, Listener {
+    public static class ExtraReachItems implements com.starshootercity.abilities.types.Ability, Listener {
         public static ExtraReachItems INSTANCE = new ExtraReachItems();
 
         private void pickUpItem(Player player, Item item) {

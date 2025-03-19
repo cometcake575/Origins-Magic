@@ -1,7 +1,7 @@
 package com.starshootercity.magicorigins;
 
 import com.starshootercity.OriginsAddon;
-import com.starshootercity.abilities.Ability;
+import com.starshootercity.abilities.types.Ability;
 import com.starshootercity.magicorigins.abilities.*;
 import com.starshootercity.util.Metrics;
 import org.bukkit.Bukkit;
@@ -24,7 +24,7 @@ public class OriginsMagic extends OriginsAddon {
     }
 
     @Override
-    public @NotNull List<Ability> getAbilities() {
+    public @NotNull List<Ability> getRegisteredAbilities() {
         List<Ability> abilities = new ArrayList<>(List.of(
                 new KillBoost(),
                 new CursedStrikes(),

@@ -1,10 +1,10 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.starshootercity.OriginsReborn;
-import com.starshootercity.abilities.Ability;
-import com.starshootercity.abilities.AttributeModifierAbility;
-import com.starshootercity.abilities.MultiAbility;
-import com.starshootercity.abilities.VisibleAbility;
+import com.starshootercity.abilities.types.Ability;
+import com.starshootercity.abilities.types.AttributeModifierAbility;
+import com.starshootercity.abilities.types.MultiAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import net.kyori.adventure.key.Key;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -46,12 +46,7 @@ public class SpiritStrength implements VisibleAbility, MultiAbility {
         }
 
         @Override
-        public double getAmount() {
-            return 0;
-        }
-
-        @Override
-        public double getChangedAmount(Player player) {
+        public double getAmount(Player player) {
             return player.getWorld().getEnvironment().equals(World.Environment.NETHER) ? 0.2 : -0.2;
         }
 
@@ -76,12 +71,7 @@ public class SpiritStrength implements VisibleAbility, MultiAbility {
         }
 
         @Override
-        public double getAmount() {
-            return 0;
-        }
-
-        @Override
-        public double getChangedAmount(Player player) {
+        public double getAmount(Player player) {
             return player.getWorld().getEnvironment().equals(World.Environment.NETHER) ? 0.2 : -0.2;
         }
 

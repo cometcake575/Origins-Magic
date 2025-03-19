@@ -1,7 +1,7 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.abilities.ParticleAbility;
-import com.starshootercity.abilities.VisibleAbility;
+import com.starshootercity.abilities.types.ParticleAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Particle;
 import org.bukkit.entity.EntityType;

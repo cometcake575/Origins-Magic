@@ -1,7 +1,7 @@
 package com.starshootercity.magicorigins.abilities;
 
-import com.starshootercity.abilities.VisibleAbility;
-import com.starshootercity.cooldowns.CooldownAbility;
+import com.starshootercity.abilities.types.CooldownAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import com.starshootercity.cooldowns.Cooldowns;
 import com.starshootercity.magicorigins.OriginsMagic;
 import com.starshootercity.util.config.ConfigManager;
@@ -10,6 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,7 @@ public class InteractRegeneration implements VisibleAbility, CooldownAbility, Li
     private final String effectDuration = "effect_duration";
 
     @Override
-    public void initialize() {
+    public void initialize(JavaPlugin plugin) {
         registerConfigOption(OriginsMagic.getInstance(), effectDuration, Collections.singletonList("How long the Regeneration effect shoud last"), ConfigManager.SettingType.INTEGER, 200);
     }
 

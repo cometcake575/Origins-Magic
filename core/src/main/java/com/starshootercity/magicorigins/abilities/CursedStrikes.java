@@ -1,8 +1,8 @@
 package com.starshootercity.magicorigins.abilities;
 
 import com.starshootercity.OriginsReborn;
-import com.starshootercity.abilities.VisibleAbility;
-import com.starshootercity.cooldowns.CooldownAbility;
+import com.starshootercity.abilities.types.CooldownAbility;
+import com.starshootercity.abilities.types.VisibleAbility;
 import com.starshootercity.cooldowns.Cooldowns;
 import net.kyori.adventure.key.Key;
 import org.bukkit.entity.LivingEntity;
